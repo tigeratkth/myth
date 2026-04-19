@@ -1,0 +1,65 @@
+# 业务智能体 · 模型与默认配置
+# 本文件持久化非敏感配置；API Key 走 .env
+
+# ---------------------------------------------
+# 可用模型注册表（UI 侧边栏下拉展示这些模型）
+# LiteLLM 模型命名规则：<provider>/<model_id>
+# ---------------------------------------------
+models:
+  - id: openai/gpt-4o
+    display_name: GPT-4o
+    provider: openai
+    max_tokens: 16384
+    enabled: true
+
+  - id: openai/gpt-4o-mini
+    display_name: GPT-4o mini
+    provider: openai
+    max_tokens: 16384
+    enabled: true
+
+  - id: anthropic/claude-sonnet-4-5
+    display_name: Claude Sonnet 4.5
+    provider: anthropic
+    max_tokens: 8192
+    enabled: true
+
+  - id: deepseek/deepseek-chat
+    display_name: DeepSeek Chat
+    provider: deepseek
+    max_tokens: 8192
+    enabled: true
+
+  - id: dashscope/qwen-max
+    display_name: 通义千问 Max
+    provider: dashscope
+    max_tokens: 8192
+    enabled: false
+
+# ---------------------------------------------
+# 运行默认值
+# ---------------------------------------------
+defaults:
+  # 运行模式: auto | human_review
+  mode: human_review
+
+  # 全局温度（各节点可覆盖）
+  temperature: 0.7
+
+  # 各模块默认模型（id 必须在上面的 models 列表中）
+  module_models:
+    m1_translator: deepseek/deepseek-chat
+    m2_ip_builder: openai/gpt-4o
+    m3_strategist: openai/gpt-4o
+    m4_marketer: anthropic/claude-sonnet-4-5
+
+# ---------------------------------------------
+# 运行时常量
+# ---------------------------------------------
+runtime:
+  # 历史记录扫描的根目录
+  outputs_dir: outputs
+  # 历史列表默认每页条数
+  history_page_size: 10
+  # 首页"最近任务"条数
+  recent_tasks_count: 5
