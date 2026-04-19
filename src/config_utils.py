@@ -83,6 +83,7 @@ _PROVIDER_DISPLAY = {
     "anthropic": "Anthropic",
     "deepseek": "DeepSeek",
     "dashscope": "通义千问",
+    "volcengine": "火山方舟",
 }
 
 

@@ -36,6 +36,32 @@ models:
     max_tokens: 8192
     enabled: false
 
+  # 火山方舟（字节豆包） · LiteLLM 走 volcengine/<endpoint_id 或 model 名>
+  # API Key 申请：https://console.volcengine.com/ark
+  - id: volcengine/doubao-1-5-pro-32k
+    display_name: 豆包 1.5 Pro 32K
+    provider: volcengine
+    max_tokens: 12288
+    enabled: true
+
+  - id: volcengine/doubao-1-5-pro-256k
+    display_name: 豆包 1.5 Pro 256K
+    provider: volcengine
+    max_tokens: 12288
+    enabled: false
+
+  - id: volcengine/doubao-pro-32k
+    display_name: 豆包 Pro 32K
+    provider: volcengine
+    max_tokens: 4096
+    enabled: false
+
+  - id: volcengine/doubao-lite-32k
+    display_name: 豆包 Lite 32K
+    provider: volcengine
+    max_tokens: 4096
+    enabled: false
+
 # ---------------------------------------------
 # 运行默认值
 # ---------------------------------------------

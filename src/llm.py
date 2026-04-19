@@ -38,6 +38,9 @@ _PROVIDER_ENV_KEY: dict[str, str] = {
     "anthropic": "ANTHROPIC_API_KEY",
     "deepseek": "DEEPSEEK_API_KEY",
     "dashscope": "DASHSCOPE_API_KEY",
+    # 火山方舟 / 字节豆包：API Key 来自 https://console.volcengine.com/ark
+    # 可选环境变量 VOLCENGINE_API_BASE，默认 https://ark.cn-beijing.volces.com/api/v3
+    "volcengine": "VOLCENGINE_API_KEY",
 }
 
 

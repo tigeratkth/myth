@@ -60,6 +60,14 @@ PROVIDERS = [
         "env_key": "DASHSCOPE_API_KEY",
         "has_base_url": False,
     },
+    {
+        "key": "volcengine",
+        "name": "火山方舟（豆包）",
+        "icon": "🌋",
+        "env_key": "VOLCENGINE_API_KEY",
+        "has_base_url": True,
+        "base_url_env": "VOLCENGINE_API_BASE",
+    },
 ]
 
 MODE_LABELS_CN = {"auto": "全自动", "human_review": "人工审核"}
@@ -214,7 +222,7 @@ def _block_models_registry(cfg: dict) -> None:
                 "id": st.column_config.TextColumn("Model ID"),
                 "provider": st.column_config.SelectboxColumn(
                     "Provider",
-                    options=["openai", "anthropic", "deepseek", "dashscope", "custom"],
+                    options=["openai", "anthropic", "deepseek", "dashscope", "volcengine", "custom"],
                 ),
                 "max_tokens": st.column_config.NumberColumn("Max Tokens", min_value=512, step=1024),
             },
