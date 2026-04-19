@@ -66,7 +66,7 @@ _M2_OUTPUT = {
         {
             "name": "AI 专芯 · 智能更聪明",
             "user_description": "单独一颗 AI 专芯，语音识别/图像处理反应更快、更准",
-            "user_need": "用户希望设备"听得懂、看得清"",
+            "user_need": "用户希望设备「听得懂、看得清」",
             "supporting_points": ["独立 NPU"],
             "differentiation": "竞品多以 CPU 模拟 AI 计算，功耗高且响应慢",
         },

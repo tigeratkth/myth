@@ -1,197 +1,307 @@
 /* ==========================================================================
-   业务智能体 · 全局样式（Material Design 3 · 浅色模式 v1）
-   规范来源：training/前端设计稿.md
+   业务智能体 · 全局样式 (Material Design 3 · 浅色模式 v2)
+   规范:  https://m3.material.io/foundations
    ========================================================================== */
 
-/* ---- Design Tokens ---- */
+/* ==========================================================================
+   1. Design Tokens - M3 完整色板 + 质感 + 动效
+   ========================================================================== */
 :root {
-  /* Colors · Primary */
-  --md-primary: #0B63E5;
-  --md-primary-hover: #0052CC;
-  --md-primary-container: #E3EDFF;
+  /* ----- Primary tonal palette (Blue 600 基调) ----- */
+  --md-primary: #0B57D0;
   --md-on-primary: #FFFFFF;
+  --md-primary-container: #D3E3FD;
+  --md-on-primary-container: #001C49;
+  --md-primary-fixed: #D3E3FD;
+  --md-primary-fixed-dim: #A8C7FA;
 
-  /* Colors · Secondary */
-  --md-secondary: #00B7C3;
-  --md-secondary-container: #D6F5F8;
+  /* ----- Secondary (Teal/Cyan 辅色) ----- */
+  --md-secondary: #00639B;
+  --md-on-secondary: #FFFFFF;
+  --md-secondary-container: #CFE5FF;
+  --md-on-secondary-container: #001D35;
 
-  /* Colors · Surface */
-  --md-surface: #FFFFFF;
-  --md-surface-variant: #F5F7FA;
-  --md-on-surface: #1A1C1E;
-  --md-on-surface-variant: #6B7280;
-  --md-outline: #E0E3E7;
-  --md-outline-strong: #C6CBD1;
+  /* ----- Tertiary (强调紫) ----- */
+  --md-tertiary: #6750A4;
+  --md-on-tertiary: #FFFFFF;
+  --md-tertiary-container: #EADDFF;
+  --md-on-tertiary-container: #21005D;
 
-  /* Colors · Semantic */
-  --md-success: #1E8E3E;
-  --md-success-container: #E6F4EA;
-  --md-warning: #E37400;
-  --md-warning-container: #FEF3E2;
-  --md-error: #D93025;
-  --md-error-container: #FCE8E6;
-  --md-info: #0288D1;
-  --md-info-container: #E1F5FE;
+  /* ----- Surface 容器层级 (M3 最新规范) ----- */
+  --md-surface: #FDFBFF;
+  --md-surface-dim: #DDD9DE;
+  --md-surface-bright: #FDFBFF;
+  --md-surface-container-lowest: #FFFFFF;
+  --md-surface-container-low: #F7F2FA;
+  --md-surface-container: #F1ECF4;
+  --md-surface-container-high: #ECE6EE;
+  --md-surface-container-highest: #E6E0E9;
 
-  /* Radius */
-  --radius-button: 20px;
-  --radius-card: 12px;
-  --radius-input: 8px;
-  --radius-chip: 999px;
+  /* ----- On-surface 文本层级 ----- */
+  --md-on-surface: #1B1B1F;
+  --md-on-surface-variant: #44474E;
+  --md-on-surface-dim: #74777F;
 
-  /* Elevation */
+  /* ----- Outline ----- */
+  --md-outline: #74777F;
+  --md-outline-variant: #C4C6D0;
+
+  /* ----- Error / 语义色 ----- */
+  --md-error: #BA1A1A;
+  --md-on-error: #FFFFFF;
+  --md-error-container: #FFDAD6;
+  --md-on-error-container: #410002;
+
+  --md-success: #146C2E;
+  --md-on-success: #FFFFFF;
+  --md-success-container: #C6F0CF;
+  --md-on-success-container: #002107;
+
+  --md-warning: #8D5000;
+  --md-on-warning: #FFFFFF;
+  --md-warning-container: #FFDCC2;
+  --md-on-warning-container: #2E1500;
+
+  --md-info: #00639B;
+  --md-on-info: #FFFFFF;
+  --md-info-container: #CFE5FF;
+  --md-on-info-container: #001D35;
+
+  /* ----- State layer opacities (M3 规范) ----- */
+  --state-hover: 0.08;
+  --state-focus: 0.12;
+  --state-pressed: 0.12;
+  --state-dragged: 0.16;
+
+  /* ----- Elevation (M3 5 级) ----- */
   --elev-0: none;
-  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
-  --elev-2: 0 2px 6px rgba(0, 0, 0, 0.06), 0 8px 20px rgba(0, 0, 0, 0.08);
+  --elev-1:
+    0px 1px 2px 0px rgba(0, 0, 0, 0.30),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --elev-2:
+    0px 1px 2px 0px rgba(0, 0, 0, 0.30),
+    0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --elev-3:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.30),
+    0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --elev-4:
+    0px 2px 3px 0px rgba(0, 0, 0, 0.30),
+    0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --elev-5:
+    0px 4px 4px 0px rgba(0, 0, 0, 0.30),
+    0px 8px 12px 6px rgba(0, 0, 0, 0.15);
 
-  /* Motion */
+  /* 更柔和的替代阴影 (让界面不要太厚重) */
+  --elev-soft-1: 0 1px 2px rgba(11, 87, 208, 0.06), 0 1px 3px rgba(11, 87, 208, 0.08);
+  --elev-soft-2: 0 2px 6px rgba(11, 87, 208, 0.08), 0 8px 16px rgba(11, 87, 208, 0.08);
+  --elev-soft-3: 0 4px 12px rgba(11, 87, 208, 0.10), 0 12px 28px rgba(11, 87, 208, 0.10);
+
+  /* ----- Shape scale (M3) ----- */
+  --shape-none: 0px;
+  --shape-xs: 4px;
+  --shape-sm: 8px;
+  --shape-md: 12px;
+  --shape-lg: 16px;
+  --shape-xl: 28px;
+  --shape-full: 9999px;
+
+  /* ----- Motion ----- */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
-  --dur-fast: 150ms;
-  --dur-med: 250ms;
-  --dur-slow: 400ms;
+  --ease-emphasized-decel: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --ease-emphasized-accel: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --dur-short1: 50ms;
+  --dur-short2: 100ms;
+  --dur-short3: 150ms;
+  --dur-short4: 200ms;
+  --dur-medium1: 250ms;
+  --dur-medium2: 300ms;
+  --dur-medium3: 350ms;
+  --dur-medium4: 400ms;
+  --dur-long1: 450ms;
+  --dur-long2: 500ms;
 
-  /* Fonts */
-  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC",
-    "Inter", "Roboto", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+  /* ----- Typography ----- */
+  --font-sans:
+    "Inter", "PingFang SC", "Microsoft YaHei", "Noto Sans SC",
+    "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:
+    "JetBrains Mono", "Fira Code", "SF Mono", ui-monospace, Consolas, monospace;
 
-  /* Spacing grid */
+  /* ----- Spacing grid (4dp) ----- */
   --sp-1: 4px;
   --sp-2: 8px;
   --sp-3: 12px;
   --sp-4: 16px;
-  --sp-5: 24px;
-  --sp-6: 32px;
-  --sp-7: 48px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 48px;
+  --sp-10: 64px;
 }
 
-/* ==========================================================================
-   顶部科技感渐变线
-   ========================================================================== */
-.md-top-line {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    var(--md-primary) 0%,
-    var(--md-secondary) 50%,
-    transparent 100%
-  );
-  z-index: 9999;
-  pointer-events: none;
-}
 
 /* ==========================================================================
-   全局字体覆盖
+   2. Global resets & typography
    ========================================================================== */
 html, body,
-[class*="css"], [data-testid="stAppViewContainer"] {
+[class*="css"],
+[data-testid="stAppViewContainer"] {
   font-family: var(--font-sans);
   color: var(--md-on-surface);
+  font-feature-settings: "cv11", "ss01", "ss03";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
 }
 
 code, pre, .md-mono {
   font-family: var(--font-mono) !important;
-  font-size: 13px;
+  font-size: 12.5px;
+  letter-spacing: 0;
+  font-feature-settings: "liga", "calt";
 }
 
-/* ==========================================================================
-   Streamlit 顶部工具栏 & 页面容器微调
-   ========================================================================== */
+/* 隐藏 Streamlit 顶部栏 + 给页面留呼吸感 */
 header[data-testid="stHeader"] {
   background: transparent;
   height: 0;
 }
 
 [data-testid="stAppViewContainer"] {
-  background: var(--md-surface-variant);
+  background: var(--md-surface-container-low);
 }
 
 [data-testid="stMain"] .block-container {
-  padding-top: 2rem;
-  padding-bottom: 4rem;
-  max-width: 1200px;
+  padding-top: 2.5rem;
+  padding-bottom: 5rem;
+  max-width: 1240px;
 }
+
+/* 顶部科技感渐变线 */
+.md-top-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background:
+    linear-gradient(90deg,
+      var(--md-primary) 0%,
+      var(--md-tertiary) 35%,
+      var(--md-secondary) 70%,
+      transparent 100%);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
 
 /* ==========================================================================
-   侧边栏
+   3. Sidebar (Material Nav Drawer 风格)
    ========================================================================== */
 section[data-testid="stSidebar"] {
-  background: var(--md-surface);
-  border-right: 1px solid var(--md-outline);
-}
-
-section[data-testid="stSidebar"] [data-testid="stSidebarNav"] {
-  padding-top: var(--sp-3);
+  background: var(--md-surface-container-low);
+  border-right: 1px solid var(--md-outline-variant);
+  box-shadow: none;
 }
 
 section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a {
-  padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--radius-input);
-  margin: var(--sp-1) var(--sp-3);
-  transition: all var(--dur-fast) var(--ease-standard);
+  padding: 12px 20px !important;
+  border-radius: var(--shape-full) !important;
+  margin: 2px 12px !important;
+  transition:
+    background var(--dur-short3) var(--ease-standard),
+    color var(--dur-short3) var(--ease-standard);
   font-size: 14px;
   font-weight: 500;
-}
-
-section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a:hover {
-  background: var(--md-surface-variant);
-}
-
-section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a[aria-current="page"] {
-  background: var(--md-primary-container);
-  color: var(--md-primary);
+  color: var(--md-on-surface-variant) !important;
   position: relative;
 }
 
-section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a[aria-current="page"]::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 10%;
-  bottom: 10%;
-  width: 3px;
-  background: var(--md-primary);
-  border-radius: 0 3px 3px 0;
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a:hover {
+  background: color-mix(in srgb, var(--md-on-surface) 6%, transparent) !important;
 }
+
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a[aria-current="page"] {
+  background: var(--md-secondary-container) !important;
+  color: var(--md-on-secondary-container) !important;
+  font-weight: 600;
+}
+
+/* Sidebar page_link (手写导航) */
+section[data-testid="stSidebar"] [data-testid="stPageLink-NavLink"] {
+  border-radius: var(--shape-full) !important;
+  padding: 10px 20px !important;
+  margin: 2px 12px !important;
+  transition: background var(--dur-short3) var(--ease-standard);
+  font-weight: 500 !important;
+  color: var(--md-on-surface-variant) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stPageLink-NavLink"]:hover {
+  background: color-mix(in srgb, var(--md-on-surface) 6%, transparent) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stPageLink-NavLink"][aria-disabled="true"] {
+  background: var(--md-secondary-container) !important;
+  color: var(--md-on-secondary-container) !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+}
+
 
 /* ==========================================================================
-   Buttons — Material Filled / Outlined / Text
+   4. Buttons (Material Filled / Tonal / Outlined / Text)
    ========================================================================== */
 .stButton > button,
-.stDownloadButton > button {
-  border-radius: var(--radius-button) !important;
+.stDownloadButton > button,
+[data-testid="stFormSubmitButton"] > button {
+  border-radius: var(--shape-full) !important;
   font-weight: 500 !important;
   font-size: 14px !important;
-  padding: 0 var(--sp-5) !important;
-  height: 40px !important;
-  transition: all var(--dur-fast) var(--ease-standard) !important;
+  line-height: 20px !important;
   letter-spacing: 0.1px !important;
+  padding: 0 24px !important;
+  height: 40px !important;
+  min-width: 0 !important;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background var(--dur-short3) var(--ease-standard),
+    box-shadow var(--dur-short3) var(--ease-standard),
+    transform var(--dur-short3) var(--ease-standard),
+    border-color var(--dur-short3) var(--ease-standard) !important;
 }
 
-/* Filled (primary) */
+/* Filled (primary) — 不加渐变，按 M3 原生 */
 .stButton > button[kind="primary"],
-.stDownloadButton > button[kind="primary"] {
-  background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-primary-hover) 100%) !important;
+.stDownloadButton > button[kind="primary"],
+[data-testid="stFormSubmitButton"] > button[kind="primary"] {
+  background: var(--md-primary) !important;
   color: var(--md-on-primary) !important;
   border: none !important;
-  box-shadow: var(--elev-1);
+  box-shadow: var(--elev-0) !important;
 }
 
 .stButton > button[kind="primary"]:hover,
 .stDownloadButton > button[kind="primary"]:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--elev-2);
-  background: linear-gradient(120deg, var(--md-primary) 0%, var(--md-primary-hover) 100%) !important;
+  background: color-mix(in srgb, var(--md-on-primary) 8%, var(--md-primary)) !important;
+  box-shadow: var(--elev-1) !important;
 }
 
-.stButton > button[kind="primary"]:active {
-  transform: translateY(0);
-  box-shadow: var(--elev-1);
+.stButton > button[kind="primary"]:active,
+.stButton > button[kind="primary"]:focus {
+  background: color-mix(in srgb, var(--md-on-primary) 12%, var(--md-primary)) !important;
+  box-shadow: var(--elev-0) !important;
+}
+
+.stButton > button[kind="primary"]:disabled {
+  background: color-mix(in srgb, var(--md-on-surface) 12%, transparent) !important;
+  color: color-mix(in srgb, var(--md-on-surface) 38%, transparent) !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
 }
 
 /* Outlined (secondary) */
@@ -199,62 +309,88 @@ section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a[aria-curre
 .stDownloadButton > button[kind="secondary"] {
   background: transparent !important;
   color: var(--md-primary) !important;
-  border: 1px solid var(--md-outline-strong) !important;
+  border: 1px solid var(--md-outline) !important;
 }
 
 .stButton > button[kind="secondary"]:hover {
-  background: var(--md-primary-container) !important;
+  background: color-mix(in srgb, var(--md-primary) 8%, transparent) !important;
   border-color: var(--md-primary) !important;
 }
 
-/* Tertiary / Text-like — Streamlit 没有原生，后续用 kind="tertiary" 占位 */
-.stButton > button[kind="tertiary"] {
+.stButton > button[kind="secondary"]:active {
+  background: color-mix(in srgb, var(--md-primary) 12%, transparent) !important;
+}
+
+.stButton > button[kind="secondary"]:disabled {
+  color: color-mix(in srgb, var(--md-on-surface) 38%, transparent) !important;
+  border-color: color-mix(in srgb, var(--md-on-surface) 12%, transparent) !important;
+  cursor: not-allowed !important;
+}
+
+/* Text (tertiary) */
+.stButton > button[kind="tertiary"],
+.stDownloadButton > button[kind="tertiary"] {
   background: transparent !important;
   color: var(--md-primary) !important;
   border: none !important;
-  padding: 0 var(--sp-3) !important;
+  padding: 0 12px !important;
 }
 
 .stButton > button[kind="tertiary"]:hover {
-  background: var(--md-primary-container) !important;
+  background: color-mix(in srgb, var(--md-primary) 8%, transparent) !important;
 }
 
+.stButton > button[kind="tertiary"]:active {
+  background: color-mix(in srgb, var(--md-primary) 12%, transparent) !important;
+}
+
+
 /* ==========================================================================
-   Cards — Streamlit bordered container
+   5. Cards (Material Filled / Outlined)
    ========================================================================== */
 [data-testid="stVerticalBlockBorderWrapper"] {
-  background: var(--md-surface) !important;
-  border: 1px solid var(--md-outline) !important;
-  border-radius: var(--radius-card) !important;
-  box-shadow: var(--elev-1);
-  transition: box-shadow var(--dur-fast) var(--ease-standard),
-    transform var(--dur-fast) var(--ease-standard);
-  padding: var(--sp-5) !important;
+  background: var(--md-surface-container-lowest) !important;
+  border: 1px solid var(--md-outline-variant) !important;
+  border-radius: var(--shape-md) !important;
+  box-shadow: none !important;
+  transition:
+    background var(--dur-short4) var(--ease-standard),
+    border-color var(--dur-short4) var(--ease-standard),
+    box-shadow var(--dur-short4) var(--ease-standard);
+  padding: var(--sp-6) !important;
 }
 
 [data-testid="stVerticalBlockBorderWrapper"]:hover {
-  box-shadow: var(--elev-2);
+  border-color: var(--md-outline) !important;
+  box-shadow: var(--elev-soft-1) !important;
 }
 
-/* 自定义卡片类 */
+/* 自定义卡片 */
 .md-card {
-  background: var(--md-surface);
-  border: 1px solid var(--md-outline);
-  border-radius: var(--radius-card);
-  box-shadow: var(--elev-1);
-  padding: var(--sp-5);
-  transition: all var(--dur-fast) var(--ease-standard);
+  background: var(--md-surface-container-lowest);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--shape-md);
+  padding: var(--sp-6);
+  transition:
+    border-color var(--dur-short4) var(--ease-standard),
+    box-shadow var(--dur-short4) var(--ease-standard),
+    transform var(--dur-short4) var(--ease-standard);
 }
 
 .md-card:hover {
-  box-shadow: var(--elev-2);
-  transform: translateY(-1px);
+  border-color: var(--md-outline);
+  box-shadow: var(--elev-soft-1);
 }
 
-/* 带主色→青色渐变左条的科技感卡片 */
+/* 带左侧双色渐变条的强调卡片 */
 .md-card-accent {
   position: relative;
   overflow: hidden;
+  background:
+    linear-gradient(135deg,
+      var(--md-primary-container) 0%,
+      var(--md-surface-container-lowest) 55%);
+  border: 1px solid var(--md-primary-fixed-dim);
 }
 
 .md-card-accent::before {
@@ -264,158 +400,176 @@ section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a[aria-curre
   top: 0;
   bottom: 0;
   width: 4px;
-  background: linear-gradient(180deg, var(--md-primary) 0%, var(--md-secondary) 100%);
+  background: linear-gradient(180deg, var(--md-primary) 0%, var(--md-tertiary) 100%);
+  border-radius: var(--shape-md) 0 0 var(--shape-md);
 }
 
+.md-card-accent:hover {
+  box-shadow: var(--elev-soft-2);
+  transform: translateY(-1px);
+}
+
+
 /* ==========================================================================
-   Banner — 模式提示
+   6. Banner (Material Snackbar-like 横幅)
    ========================================================================== */
 .md-banner {
   display: flex;
   align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--radius-input);
-  margin-bottom: var(--sp-4);
-  position: relative;
-  padding-left: calc(var(--sp-4) + 4px);
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4) var(--sp-3) var(--sp-5);
+  border-radius: var(--shape-md);
+  margin-bottom: var(--sp-5);
   font-size: 14px;
+  line-height: 1.45;
+  position: relative;
+  border: 1px solid transparent;
+  transition: box-shadow var(--dur-short3) var(--ease-standard);
 }
 
-.md-banner::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 8px;
-  bottom: 8px;
-  width: 4px;
-  border-radius: 2px;
+.md-banner:hover {
+  box-shadow: var(--elev-soft-1);
 }
 
 .md-banner-icon {
-  font-size: 20px;
+  font-size: 22px;
   flex-shrink: 0;
+  opacity: 0.9;
 }
 
 .md-banner-content {
   flex: 1;
+  min-width: 0;
 }
 
 .md-banner-title {
   font-weight: 600;
   font-size: 14px;
+  letter-spacing: 0;
 }
 
 .md-banner-desc {
-  color: var(--md-on-surface-variant);
   font-size: 13px;
   margin-top: 2px;
+  opacity: 0.85;
 }
 
 .md-banner-action {
   flex-shrink: 0;
   color: currentColor;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
-  padding: 6px 10px;
-  border-radius: var(--radius-input);
-  transition: background var(--dur-fast) var(--ease-standard);
+  padding: 6px 12px;
+  border-radius: var(--shape-full);
+  transition: background var(--dur-short3) var(--ease-standard);
+  cursor: pointer;
 }
 
 .md-banner-action:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: color-mix(in srgb, currentColor 10%, transparent);
 }
 
-/* Banner 变体 */
+/* Variants */
 .md-banner-info {
   background: var(--md-info-container);
-  color: var(--md-info);
+  color: var(--md-on-info-container);
+  border-color: color-mix(in srgb, var(--md-info) 18%, transparent);
 }
-.md-banner-info::before { background: var(--md-info); }
-
 .md-banner-warning {
   background: var(--md-warning-container);
-  color: var(--md-warning);
+  color: var(--md-on-warning-container);
+  border-color: color-mix(in srgb, var(--md-warning) 20%, transparent);
 }
-.md-banner-warning::before { background: var(--md-warning); }
-
 .md-banner-success {
   background: var(--md-success-container);
-  color: var(--md-success);
+  color: var(--md-on-success-container);
+  border-color: color-mix(in srgb, var(--md-success) 18%, transparent);
 }
-.md-banner-success::before { background: var(--md-success); }
-
 .md-banner-error {
   background: var(--md-error-container);
-  color: var(--md-error);
+  color: var(--md-on-error-container);
+  border-color: color-mix(in srgb, var(--md-error) 20%, transparent);
 }
-.md-banner-error::before { background: var(--md-error); }
+
 
 /* ==========================================================================
-   Status Chips
+   7. Chips (Material Assist Chip)
    ========================================================================== */
 .md-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 24px;
-  padding: 0 var(--sp-3);
-  border-radius: var(--radius-chip);
+  height: 26px;
+  padding: 0 10px 0 8px;
+  border-radius: var(--shape-sm);
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
+  line-height: 1;
+  letter-spacing: 0.1px;
+  border: 1px solid transparent;
+  transition: background var(--dur-short3) var(--ease-standard);
 }
 
 .md-chip-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .md-chip-completed {
   background: var(--md-success-container);
-  color: var(--md-success);
+  color: var(--md-on-success-container);
+  border-color: color-mix(in srgb, var(--md-success) 22%, transparent);
 }
 .md-chip-completed .md-chip-dot { background: var(--md-success); }
 
 .md-chip-running {
-  background: var(--md-info-container);
-  color: var(--md-info);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-color: color-mix(in srgb, var(--md-primary) 22%, transparent);
 }
 .md-chip-running .md-chip-dot {
-  background: var(--md-info);
+  background: var(--md-primary);
   animation: md-pulse 1.6s var(--ease-standard) infinite;
 }
 
 .md-chip-awaiting {
   background: var(--md-warning-container);
-  color: var(--md-warning);
+  color: var(--md-on-warning-container);
+  border-color: color-mix(in srgb, var(--md-warning) 22%, transparent);
 }
 .md-chip-awaiting .md-chip-dot { background: var(--md-warning); }
 
 .md-chip-failed {
   background: var(--md-error-container);
-  color: var(--md-error);
+  color: var(--md-on-error-container);
+  border-color: color-mix(in srgb, var(--md-error) 22%, transparent);
 }
 .md-chip-failed .md-chip-dot { background: var(--md-error); }
 
 .md-chip-pending {
-  background: var(--md-surface-variant);
+  background: var(--md-surface-container);
   color: var(--md-on-surface-variant);
+  border-color: var(--md-outline-variant);
 }
-.md-chip-pending .md-chip-dot { background: var(--md-outline-strong); }
+.md-chip-pending .md-chip-dot { background: var(--md-on-surface-dim); }
+
 
 /* ==========================================================================
-   Step Progress — 四模块步骤条
+   8. Step Progress (四模块步骤条)
    ========================================================================== */
 .md-steps {
   display: flex;
   align-items: center;
   gap: 0;
-  padding: var(--sp-4) 0;
+  padding: var(--sp-5) var(--sp-2);
   width: 100%;
+  background: var(--md-surface-container-lowest);
+  border-radius: var(--shape-lg);
+  border: 1px solid var(--md-outline-variant);
 }
 
 .md-step {
@@ -423,22 +577,25 @@ section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a[aria-curre
   flex-direction: column;
   align-items: center;
   flex: 0 0 auto;
-  min-width: 100px;
+  min-width: 96px;
+  padding: 0 var(--sp-2);
 }
 
 .md-step-node {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: 14px;
-  transition: all var(--dur-med) var(--ease-standard);
-  background: var(--md-surface-variant);
+  background: var(--md-surface-container);
   color: var(--md-on-surface-variant);
-  border: 2px solid var(--md-outline);
+  border: 1.5px solid var(--md-outline-variant);
+  transition: all var(--dur-medium1) var(--ease-emphasized);
+  position: relative;
+  z-index: 1;
 }
 
 .md-step-label {
@@ -446,305 +603,486 @@ section[data-testid="stSidebar"] [data-testid="stSidebarNav"] ul li a[aria-curre
   font-size: 13px;
   font-weight: 500;
   color: var(--md-on-surface-variant);
+  letter-spacing: 0.1px;
 }
 
 .md-step-meta {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--md-on-surface-variant);
+  color: var(--md-on-surface-dim);
   margin-top: 2px;
+  letter-spacing: 0;
 }
 
 .md-step-connector {
   flex: 1;
   height: 2px;
-  background: var(--md-outline);
+  background: var(--md-outline-variant);
   min-width: 24px;
-  transition: background var(--dur-med) var(--ease-standard);
-  margin-bottom: 28px;
+  transition: background var(--dur-medium2) var(--ease-emphasized);
+  margin-bottom: 34px;
+  border-radius: 1px;
+  align-self: center;
 }
 
-/* 状态：完成 */
+/* 已完成 */
 .md-step-completed .md-step-node {
-  background: var(--md-success);
-  color: #fff;
-  border-color: var(--md-success);
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  border-color: var(--md-primary);
+  box-shadow: var(--elev-soft-1);
 }
 .md-step-completed .md-step-label {
   color: var(--md-on-surface);
+  font-weight: 600;
 }
 .md-step-connector.done {
-  background: var(--md-success);
+  background: linear-gradient(90deg, var(--md-primary) 0%, var(--md-primary) 100%);
+  height: 2.5px;
 }
 
-/* 状态：运行中（脉冲） */
+/* 运行中 (脉冲光环) */
 .md-step-running .md-step-node {
   background: var(--md-primary);
-  color: #fff;
+  color: var(--md-on-primary);
   border-color: var(--md-primary);
-  animation: md-pulse-ring 1.6s var(--ease-standard) infinite;
+  animation: md-pulse-ring 1.8s var(--ease-standard) infinite;
 }
 .md-step-running .md-step-label {
   color: var(--md-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* 状态：等待审核 */
+/* 待审核 */
 .md-step-awaiting .md-step-node {
   background: var(--md-warning);
-  color: #fff;
+  color: var(--md-on-warning);
   border-color: var(--md-warning);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--md-warning) 12%, transparent);
 }
 .md-step-awaiting .md-step-label {
-  color: var(--md-warning);
+  color: var(--md-on-warning-container);
+  font-weight: 700;
+}
+
+/* 失败 */
+.md-step-failed .md-step-node {
+  background: var(--md-error);
+  color: var(--md-on-error);
+  border-color: var(--md-error);
+}
+.md-step-failed .md-step-label {
+  color: var(--md-error);
   font-weight: 600;
 }
 
-/* 状态：失败 */
-.md-step-failed .md-step-node {
-  background: var(--md-error);
-  color: #fff;
-  border-color: var(--md-error);
-}
 
 /* ==========================================================================
-   Animations
+   9. Animations
    ========================================================================== */
 @keyframes md-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.2); }
+  50% { opacity: 0.55; transform: scale(1.3); }
 }
 
 @keyframes md-pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(11, 99, 229, 0.5); }
-  70% { box-shadow: 0 0 0 10px rgba(11, 99, 229, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(11, 99, 229, 0); }
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--md-primary) 50%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 12px color-mix(in srgb, var(--md-primary) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--md-primary) 0%, transparent);
+  }
 }
 
 @keyframes md-fade-in {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.md-fade-in {
-  animation: md-fade-in var(--dur-med) var(--ease-standard);
+@keyframes md-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
+.md-fade-in {
+  animation: md-fade-in var(--dur-medium2) var(--ease-emphasized-decel);
+}
+
+
 /* ==========================================================================
-   Typography helpers
+   10. Typography scale (M3)
    ========================================================================== */
 .md-display {
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 44px;
+  letter-spacing: -0.25px;
   color: var(--md-on-surface);
   margin: 0;
 }
 
 .md-headline {
   font-size: 24px;
-  font-weight: 600;
-  line-height: 1.3;
+  font-weight: 500;
+  line-height: 32px;
+  letter-spacing: 0;
   color: var(--md-on-surface);
   margin: 0;
 }
 
 .md-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 24px;
+  letter-spacing: 0.15px;
   color: var(--md-on-surface);
   margin: 0;
 }
 
 .md-body {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 22px;
+  letter-spacing: 0.25px;
   color: var(--md-on-surface);
 }
 
 .md-body-sm {
   font-size: 13px;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 20px;
+  letter-spacing: 0.25px;
   color: var(--md-on-surface-variant);
 }
 
 .md-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--md-on-surface-variant);
-  text-transform: none;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .md-caption {
   font-size: 12px;
-  color: var(--md-on-surface-variant);
+  color: var(--md-on-surface-dim);
+  line-height: 18px;
+  letter-spacing: 0.25px;
 }
 
-/* KV row */
+
+/* ==========================================================================
+   11. KV Row
+   ========================================================================== */
 .md-kv {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--md-outline);
-  gap: var(--sp-3);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--md-outline-variant);
+  gap: var(--sp-4);
+}
+.md-kv:last-child { border-bottom: none; }
+
+.md-kv-label {
+  color: var(--md-on-surface-variant);
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
 }
 
-.md-kv:last-child { border-bottom: none; }
-.md-kv-label { color: var(--md-on-surface-variant); font-size: 13px; }
-.md-kv-value { color: var(--md-on-surface); font-size: 14px; font-weight: 500; text-align: right; }
-.md-kv-value.mono { font-family: var(--font-mono); font-size: 13px; }
+.md-kv-value {
+  color: var(--md-on-surface);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+}
+
+.md-kv-value.mono {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 400;
+}
+
 
 /* ==========================================================================
-   Inputs
+   12. Inputs (Material Filled-ish text field)
    ========================================================================== */
 [data-baseweb="input"] input,
 [data-baseweb="textarea"] textarea {
-  border-radius: var(--radius-input) !important;
-  transition: all var(--dur-fast) var(--ease-standard);
+  border-radius: var(--shape-sm) !important;
+  background: var(--md-surface-container-lowest) !important;
+  border-color: var(--md-outline-variant) !important;
+  transition: all var(--dur-short3) var(--ease-standard);
+  font-size: 14px !important;
+}
+
+[data-baseweb="input"]:hover input,
+[data-baseweb="textarea"]:hover textarea {
+  border-color: var(--md-on-surface-variant) !important;
 }
 
 [data-baseweb="input"]:focus-within,
 [data-baseweb="textarea"]:focus-within {
-  box-shadow: 0 0 0 3px rgba(11, 99, 229, 0.12);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--md-primary) 40%, transparent);
+}
+
+[data-baseweb="input"]:focus-within input,
+[data-baseweb="textarea"]:focus-within textarea {
+  border-color: var(--md-primary) !important;
 }
 
 /* Select */
 [data-baseweb="select"] > div {
-  border-radius: var(--radius-input) !important;
+  border-radius: var(--shape-sm) !important;
+  border-color: var(--md-outline-variant) !important;
+  background: var(--md-surface-container-lowest) !important;
+  min-height: 42px !important;
 }
 
-/* File uploader — 科技感虚线边框 */
+[data-baseweb="select"] > div:hover {
+  border-color: var(--md-on-surface-variant) !important;
+}
+
+/* File uploader — 虚线区域 */
 [data-testid="stFileUploaderDropzone"] {
-  border-radius: var(--radius-card) !important;
-  border: 2px dashed var(--md-outline-strong) !important;
-  background: var(--md-surface-variant) !important;
-  transition: all var(--dur-fast) var(--ease-standard);
+  border-radius: var(--shape-md) !important;
+  border: 2px dashed var(--md-outline-variant) !important;
+  background: var(--md-surface-container-low) !important;
+  transition: all var(--dur-short4) var(--ease-standard);
+  padding: var(--sp-6) !important;
 }
 
 [data-testid="stFileUploaderDropzone"]:hover {
   border-color: var(--md-primary) !important;
-  background: var(--md-primary-container) !important;
+  background: color-mix(in srgb, var(--md-primary) 4%, var(--md-surface-container-low)) !important;
 }
 
+/* Radio */
+[data-baseweb="radio"] {
+  font-size: 14px !important;
+}
+
+[data-baseweb="radio"] input:checked + div > div {
+  background: var(--md-primary) !important;
+  border-color: var(--md-primary) !important;
+}
+
+/* Checkbox */
+[data-testid="stCheckbox"] label {
+  font-size: 14px !important;
+}
+
+/* Slider */
+[data-baseweb="slider"] [role="slider"] {
+  background: var(--md-primary) !important;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--md-primary) 20%, transparent) !important;
+  transition: box-shadow var(--dur-short3) var(--ease-standard);
+}
+
+[data-baseweb="slider"] [role="slider"]:hover {
+  box-shadow: 0 0 0 10px color-mix(in srgb, var(--md-primary) 12%, transparent) !important;
+}
+
+
 /* ==========================================================================
-   Tabs
+   13. Tabs
    ========================================================================== */
 [data-baseweb="tab-list"] {
-  gap: var(--sp-2);
-  border-bottom: 1px solid var(--md-outline);
+  gap: 0 !important;
+  border-bottom: 1px solid var(--md-outline-variant) !important;
+  background: transparent !important;
+  margin-bottom: var(--sp-4) !important;
 }
 
 [data-baseweb="tab"] {
   font-weight: 500 !important;
   font-size: 14px !important;
-  padding: var(--sp-3) var(--sp-4) !important;
+  padding: 14px 20px !important;
   border-bottom: 2px solid transparent !important;
   color: var(--md-on-surface-variant) !important;
-  transition: all var(--dur-fast) var(--ease-standard);
+  transition:
+    color var(--dur-short3) var(--ease-standard),
+    border-color var(--dur-short3) var(--ease-standard),
+    background var(--dur-short3) var(--ease-standard) !important;
+  letter-spacing: 0.1px !important;
+  border-radius: 0 !important;
+}
+
+[data-baseweb="tab"]:hover {
+  color: var(--md-on-surface) !important;
+  background: color-mix(in srgb, var(--md-primary) 5%, transparent) !important;
 }
 
 [data-baseweb="tab"][aria-selected="true"] {
   color: var(--md-primary) !important;
   border-bottom-color: var(--md-primary) !important;
+  font-weight: 600 !important;
 }
 
+
 /* ==========================================================================
-   Progress Bar
+   14. Progress Bar
    ========================================================================== */
 [data-testid="stProgress"] > div > div {
-  border-radius: 2px !important;
-  height: 4px !important;
+  border-radius: var(--shape-xs) !important;
+  height: 6px !important;
+  background: var(--md-surface-container-high) !important;
 }
 
 [data-testid="stProgress"] > div > div > div {
-  background: linear-gradient(90deg, var(--md-primary), var(--md-secondary)) !important;
+  background: linear-gradient(90deg, var(--md-primary) 0%, var(--md-tertiary) 100%) !important;
+  border-radius: var(--shape-xs) !important;
 }
 
+
 /* ==========================================================================
-   Dataframes — 让表格更 Material
+   15. Dataframes / Data Editor
    ========================================================================== */
-[data-testid="stDataFrame"] {
-  border: 1px solid var(--md-outline);
-  border-radius: var(--radius-card);
+[data-testid="stDataFrame"],
+[data-testid="stDataEditor"] {
+  border: 1px solid var(--md-outline-variant) !important;
+  border-radius: var(--shape-md) !important;
   overflow: hidden;
+  background: var(--md-surface-container-lowest);
 }
 
+
 /* ==========================================================================
-   Dividers
+   16. Dividers
    ========================================================================== */
 hr, [data-testid="stDivider"] {
   border: none !important;
-  border-top: 1px solid var(--md-outline) !important;
-  margin: var(--sp-4) 0 !important;
+  border-top: 1px solid var(--md-outline-variant) !important;
+  margin: var(--sp-5) 0 !important;
 }
 
+
 /* ==========================================================================
-   Expanders — 更轻量
+   17. Expanders
    ========================================================================== */
 [data-testid="stExpander"] {
-  border: 1px solid var(--md-outline) !important;
-  border-radius: var(--radius-input) !important;
-  background: var(--md-surface) !important;
+  border: 1px solid var(--md-outline-variant) !important;
+  border-radius: var(--shape-md) !important;
+  background: var(--md-surface-container-lowest) !important;
+  transition: border-color var(--dur-short4) var(--ease-standard);
+}
+
+[data-testid="stExpander"]:hover {
+  border-color: var(--md-outline) !important;
 }
 
 [data-testid="stExpander"] summary {
-  padding: var(--sp-3) var(--sp-4) !important;
+  padding: 14px 20px !important;
   font-weight: 500 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.1px !important;
 }
 
+[data-testid="stExpander"] summary:hover {
+  background: color-mix(in srgb, var(--md-primary) 4%, transparent) !important;
+  border-radius: var(--shape-md) var(--shape-md) 0 0 !important;
+}
+
+
 /* ==========================================================================
-   Material Symbols 图标包装
+   18. Alerts (st.info / warning / success / error) -> 统一 Material Banner
+   ========================================================================== */
+[data-testid="stAlert"] {
+  border-radius: var(--shape-md) !important;
+  border: 1px solid transparent !important;
+  padding: 14px 18px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+[data-testid="stAlert"] [data-testid="stAlertContentInfo"],
+[data-testid="stAlert"][kind="info"] {
+  background: var(--md-info-container) !important;
+  color: var(--md-on-info-container) !important;
+  border-color: color-mix(in srgb, var(--md-info) 18%, transparent) !important;
+}
+
+
+/* ==========================================================================
+   19. Material Symbols
    ========================================================================== */
 .material-symbols-rounded {
-  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   vertical-align: middle;
   line-height: 1;
+  user-select: none;
 }
 
-.md-icon-sm {
-  font-size: 18px;
-}
+.md-icon-sm { font-size: 18px; }
+.md-icon-md { font-size: 20px; }
+.md-icon-lg { font-size: 24px; }
 
-.md-icon-md {
-  font-size: 20px;
-}
-
-.md-icon-lg {
-  font-size: 24px;
-}
 
 /* ==========================================================================
-   侧边栏徽章 —— 当前任务
+   20. Sidebar Logo + Task Badge
    ========================================================================== */
 .md-sidebar-badge {
   margin: var(--sp-3);
-  padding: var(--sp-3);
-  border-radius: var(--radius-input);
-  border: 1px solid var(--md-outline);
-  background: var(--md-surface-variant);
+  padding: var(--sp-4);
+  border-radius: var(--shape-md);
+  border: 1px solid var(--md-outline-variant);
+  background: var(--md-surface-container-lowest);
   font-size: 12px;
   color: var(--md-on-surface-variant);
+  transition: border-color var(--dur-short3) var(--ease-standard);
 }
 
 .md-sidebar-badge.active {
-  background: var(--md-info-container);
-  border-color: var(--md-info);
-  color: var(--md-info);
+  background: var(--md-primary-container);
+  border-color: var(--md-primary-fixed-dim);
+  color: var(--md-on-primary-container);
 }
 
 .md-sidebar-badge-title {
   font-weight: 600;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  letter-spacing: 0.2px;
 }
 
+
 /* ==========================================================================
-   工具类
+   21. Tooltip / Popover
+   ========================================================================== */
+[data-testid="stPopover"] > button {
+  border-radius: var(--shape-full) !important;
+  border: 1px solid var(--md-outline) !important;
+  background: transparent !important;
+  color: var(--md-primary) !important;
+  height: 40px !important;
+}
+
+[data-testid="stPopover"] > button:hover {
+  background: color-mix(in srgb, var(--md-primary) 8%, transparent) !important;
+}
+
+
+/* ==========================================================================
+   22. Toast / Snackbar
+   ========================================================================== */
+[data-testid="stToast"] {
+  border-radius: var(--shape-sm) !important;
+  background: var(--md-on-surface) !important;
+  color: var(--md-surface-container-lowest) !important;
+  box-shadow: var(--elev-3) !important;
+  font-size: 14px !important;
+  padding: 12px 16px !important;
+  letter-spacing: 0.1px !important;
+}
+
+
+/* ==========================================================================
+   23. Utility classes
    ========================================================================== */
 .md-row { display: flex; align-items: center; gap: var(--sp-3); }
 .md-row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
@@ -753,8 +1091,92 @@ hr, [data-testid="stDivider"] {
 .md-gap-2 { gap: var(--sp-2); }
 .md-gap-3 { gap: var(--sp-3); }
 .md-gap-4 { gap: var(--sp-4); }
+.md-mt-1 { margin-top: var(--sp-1); }
 .md-mt-2 { margin-top: var(--sp-2); }
 .md-mt-3 { margin-top: var(--sp-3); }
 .md-mt-4 { margin-top: var(--sp-4); }
+.md-mt-6 { margin-top: var(--sp-6); }
+.md-mb-2 { margin-bottom: var(--sp-2); }
 .md-mb-3 { margin-bottom: var(--sp-3); }
 .md-mb-4 { margin-bottom: var(--sp-4); }
+.md-mb-6 { margin-bottom: var(--sp-6); }
+
+
+/* ==========================================================================
+   24. 首页 "欢迎" hero block
+   ========================================================================== */
+.md-hero-block {
+  position: relative;
+  padding: var(--sp-7) var(--sp-6) var(--sp-6);
+  border-radius: var(--shape-lg);
+  background:
+    radial-gradient(ellipse at top right,
+      color-mix(in srgb, var(--md-primary) 10%, transparent) 0%,
+      transparent 50%),
+    radial-gradient(ellipse at bottom left,
+      color-mix(in srgb, var(--md-tertiary) 6%, transparent) 0%,
+      transparent 50%),
+    var(--md-surface-container-lowest);
+  border: 1px solid var(--md-outline-variant);
+  overflow: hidden;
+  margin-bottom: var(--sp-6);
+}
+
+.md-hero-block::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: -60px;
+  width: 200px;
+  height: 200px;
+  background:
+    conic-gradient(from 180deg,
+      var(--md-primary) 0deg,
+      var(--md-tertiary) 180deg,
+      var(--md-primary) 360deg);
+  border-radius: 50%;
+  opacity: 0.08;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+
+/* ==========================================================================
+   25. Scrollbar (微调, 更 Material)
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--md-on-surface) 18%, transparent);
+  border-radius: var(--shape-full);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--md-on-surface) 35%, transparent);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+
+/* ==========================================================================
+   26. 链接
+   ========================================================================== */
+a {
+  color: var(--md-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--dur-short3) var(--ease-standard);
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--md-on-surface) 12%, var(--md-primary));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+}
