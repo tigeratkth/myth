@@ -17,6 +17,7 @@ from src.ui.components import (
     md_headline,
     md_title,
     md_caption,
+    md_chip,
     snackbar,
 )
 from src.ui.layout import render_sidebar
@@ -83,20 +84,135 @@ def _load_config() -> dict:
 # ============================================================
 # 区块 1 · API Key 管理
 # ============================================================
-def _mask(val: str) -> str:
-    """把已保存的 Key 做脱敏展示,只保留后 4 位。"""
-    if not val:
-        return ""
-    if len(val) <= 6:
-        return "*" * len(val)
-    return f"{'*' * (len(val) - 4)}{val[-4:]}"
-
-
 def _first_model_of(models: list[dict], provider: str) -> str | None:
     for m in models:
         if m.get("provider") == provider and m.get("enabled", True):
             return m.get("id")
     return None
+
+
+def _tail4(val: str) -> str:
+    """取 Key 末 4 位（长度不足则全部），用于状态 chip 展示。"""
+    if not val:
+        return ""
+    return val[-4:] if len(val) >= 4 else val
+
+
+def _render_provider_row(p: dict, env: dict, models_cfg: list[dict]) -> None:
+    """单家 Provider 的设置块：小标题 + API Key 行 + 可选 Base URL 行。"""
+    env_key = p["env_key"]
+    saved = env.get(env_key, "") or ""
+    has_base = p.get("has_base_url", False)
+
+    # —— 标题行：图标 + 名称 + 已配置 chip（右对齐）——
+    chip_html = (
+        md_chip("completed", f"已配置 · ****{_tail4(saved)}")
+        if saved
+        else md_chip("pending", "未配置")
+    )
+    st.markdown(
+        f"<div style='display:flex;align-items:center;justify-content:space-between;"
+        f"margin-top:4px;margin-bottom:8px'>"
+        f"<div class='md-title'>{p['icon']} {p['name']}</div>"
+        f"<div>{chip_html}</div>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+    # —— 第一行：API Key 输入 + 保存/测试 按钮 ——
+    input_state_key = f"settings_key_{p['key']}"
+    c_input, c_btn = st.columns([6, 2], vertical_alignment="bottom")
+    with c_input:
+        st.text_input(
+            f"{p['name']} API Key",
+            type="password",
+            placeholder=(
+                "在此粘贴新 Key（留空保存则不修改已配置的 Key）"
+                if saved
+                else "粘贴你的 API Key，例如 sk-..."
+            ),
+            key=input_state_key,
+            label_visibility="collapsed",
+        )
+
+        # —— 第二行（仅有 Base URL 的 Provider）——
+        if has_base:
+            base_env = p["base_url_env"]
+            saved_base = env.get(base_env, "") or ""
+            base_state_key = f"settings_baseurl_{p['key']}"
+            # 首次渲染时回填已保存值，之后交给 session_state
+            if base_state_key not in st.session_state:
+                st.session_state[base_state_key] = saved_base
+            st.text_input(
+                f"{p['name']} Base URL（可选）",
+                placeholder="留空使用默认值",
+                key=base_state_key,
+                help="仅需自定义代理或接入点时填写。",
+            )
+
+    with c_btn:
+        col_save, col_test = st.columns(2, gap="small")
+        with col_save:
+            if st.button(
+                "保存",
+                key=f"settings_save_{p['key']}",
+                type="primary",
+                use_container_width=True,
+            ):
+                input_val = (st.session_state.get(input_state_key, "") or "").strip()
+                updates: dict[str, str] = {}
+                # 留空不覆盖已保存 Key，避免误清空
+                if input_val:
+                    updates[env_key] = input_val
+                if has_base:
+                    base_val = (
+                        st.session_state.get(f"settings_baseurl_{p['key']}", "") or ""
+                    ).strip()
+                    updates[p["base_url_env"]] = base_val
+                if not updates:
+                    snackbar("没有需要保存的改动", icon="ℹ️")
+                else:
+                    save_env(updates)
+                    # 保存后清空输入，避免明文长期留在页面
+                    st.session_state[input_state_key] = ""
+                    snackbar(f"{p['name']} 已保存到 .env", icon="💾")
+                    st.rerun()
+        with col_test:
+            if st.button(
+                "测试",
+                key=f"settings_test_{p['key']}",
+                type="secondary",
+                use_container_width=True,
+            ):
+                import os
+
+                # 优先用当前输入，否则用已保存的
+                input_val = (
+                    st.session_state.get(input_state_key, "") or ""
+                ).strip() or saved
+                if not input_val:
+                    snackbar(f"{p['name']} Key 为空，请先填写或保存", icon="⚠️")
+                else:
+                    orig = os.environ.get(env_key)
+                    os.environ[env_key] = input_val
+                    try:
+                        model_id = _first_model_of(models_cfg, p["key"])
+                        if not model_id:
+                            snackbar(
+                                f"{p['name']} 无启用模型，请在下方模型注册表开启",
+                                icon="⚠️",
+                            )
+                        else:
+                            ok, msg = test_connection(model_id)
+                            snackbar(
+                                f"{p['name']} {'✅' if ok else '❌'} {msg[:120]}",
+                                icon="🟢" if ok else "🔴",
+                            )
+                    finally:
+                        if orig is None:
+                            os.environ.pop(env_key, None)
+                        else:
+                            os.environ[env_key] = orig
 
 
 def _block_api_keys(cfg: dict) -> None:
@@ -105,93 +221,22 @@ def _block_api_keys(cfg: dict) -> None:
 
     with st.container(border=True):
         md_title("🔑 API Key 管理")
-        md_caption("每家 Provider 一行;Key 保存到本地 `.env`,不会上传到任何服务器。")
+        md_caption(
+            "每家 Provider 独立一组；Key 保存到本地 `.env`，不会上传到任何服务器。"
+            "留空保存 = 不修改已配置的 Key。"
+        )
 
-        for p in PROVIDERS:
-            env_key = p["env_key"]
-            saved = env.get(env_key, "") or ""
-            c_name, c_input, c_btn = st.columns([2, 5, 2], vertical_alignment="bottom")
-            with c_name:
-                badge = " · 🟢 已配置" if saved else ""
+        for i, p in enumerate(PROVIDERS):
+            if i > 0:
                 st.markdown(
-                    f"<div class='md-body' style='padding-top:12px'>"
-                    f"{p['icon']} <b>{p['name']}</b>"
-                    f"<span class='md-caption'>{badge}</span></div>",
+                    "<hr style='margin:18px 0 4px;border:none;"
+                    "border-top:1px solid var(--md-outline-variant)'/>",
                     unsafe_allow_html=True,
                 )
-            with c_input:
-                default_key = st.session_state.get(f"settings_key_{p['key']}")
-                st.text_input(
-                    f"{p['name']} API Key",
-                    type="password",
-                    placeholder=_mask(saved) if saved else "sk-...",
-                    key=f"settings_key_{p['key']}",
-                    label_visibility="collapsed",
-                    value=default_key if default_key is not None else "",
-                )
-                if p.get("has_base_url"):
-                    base_key = p["base_url_env"]
-                    saved_base = env.get(base_key, "") or ""
-                    st.text_input(
-                        f"{p['name']} Base URL(可选)",
-                        value=saved_base,
-                        placeholder="https://api.openai.com/v1",
-                        key=f"settings_baseurl_{p['key']}",
-                    )
-            with c_btn:
-                col_save, col_test = st.columns(2, gap="small")
-                with col_save:
-                    if st.button(
-                        "保存",
-                        key=f"settings_save_{p['key']}",
-                        type="primary",
-                        use_container_width=True,
-                    ):
-                        input_val = st.session_state.get(f"settings_key_{p['key']}", "")
-                        updates = {env_key: input_val}
-                        if p.get("has_base_url"):
-                            updates[p["base_url_env"]] = st.session_state.get(
-                                f"settings_baseurl_{p['key']}", ""
-                            )
-                        save_env(updates)
-                        snackbar(f"{p['name']} 已保存到 .env", icon="💾")
-                        st.rerun()
-                with col_test:
-                    if st.button(
-                        "测试",
-                        key=f"settings_test_{p['key']}",
-                        type="secondary",
-                        use_container_width=True,
-                    ):
-                        # 测试时临时把输入写到环境变量,再回滚
-                        import os
+            _render_provider_row(p, env, models_cfg)
 
-                        input_val = st.session_state.get(f"settings_key_{p['key']}", "") or saved
-                        if not input_val:
-                            snackbar(f"{p['name']} Key 为空,请先填写或保存", icon="⚠️")
-                        else:
-                            orig = os.environ.get(env_key)
-                            os.environ[env_key] = input_val
-                            try:
-                                model_id = _first_model_of(models_cfg, p["key"])
-                                if not model_id:
-                                    snackbar(
-                                        f"{p['name']} 无启用模型,请在下方模型注册表开启",
-                                        icon="⚠️",
-                                    )
-                                else:
-                                    ok, msg = test_connection(model_id)
-                                    snackbar(
-                                        f"{p['name']} {'✅' if ok else '❌'} {msg[:120]}",
-                                        icon="🟢" if ok else "🔴",
-                                    )
-                            finally:
-                                if orig is None:
-                                    os.environ.pop(env_key, None)
-                                else:
-                                    os.environ[env_key] = orig
-
-        st.info("🔒 Key 仅保存在本地 .env 文件,不会上传任何服务器")
+        st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
+        st.info("🔒 Key 仅保存在本地 .env 文件，不会上传任何服务器")
 
 
 # ============================================================
