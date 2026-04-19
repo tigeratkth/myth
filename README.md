@@ -9,7 +9,7 @@
 3. 围绕技术IP 的**推广策略**
 4. 具体的**营销内容与活动方案**
 
-支持**全自动**与**人工审核**两种模式，多模型自由切换（OpenAI / Anthropic / DeepSeek / 通义千问 等）。
+支持**全自动**与**人工审核**两种模式，多模型自由切换（OpenAI / Anthropic / DeepSeek / 通义千问 / 火山方舟（豆包）等）。
 
 ---
 
@@ -138,6 +138,7 @@ LiteLLM 命名规则：`<provider>/<model_id>`
 | Anthropic | `ANTHROPIC_API_KEY` | `anthropic/claude-sonnet-4-5` |
 | DeepSeek | `DEEPSEEK_API_KEY` | `deepseek/deepseek-chat` |
 | 通义千问 / DashScope | `DASHSCOPE_API_KEY` | `dashscope/qwen-max` |
+| 火山方舟（豆包） | `VOLCENGINE_API_KEY` | `volcengine/doubao-1-5-pro-32k`, `volcengine/doubao-pro-32k` |
 
 在「⚙️ 模型与设置 → 模型注册表」可以**启用 / 新增 / 修改**模型。任何 LiteLLM 支持的 provider 都可以通过在注册表加一行来启用。
 
